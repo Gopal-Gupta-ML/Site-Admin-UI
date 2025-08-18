@@ -1,14 +1,13 @@
 import React from "react";
 import { Form, Input, Button, Card, Typography, message } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import { login } from "../api/service";
 
 const { Title } = Typography;
 
 const LoginComp = () => {
   const onFinish = (values) => {
-    console.log("Login details:", values);
-    message.success("Login successful!");
-    // Add your login API call here
+    login(values)
   };
 
   return (

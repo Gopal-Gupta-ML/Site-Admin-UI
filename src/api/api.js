@@ -1,30 +1,58 @@
 import axios from "axios";
 
-const axiosInstance = axios.create({
-  baseURL: process.env.REACT_APP_BASE_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-// Generic GET
-export const get = (url, params = {}) => {
-  return axiosInstance.get(url, { params });
+/**
+ * Simple GET request
+ * @param {string} url - API endpoint
+ * @param {object} params - Optional query params
+ */
+export const apiGet = async (url, params = {}) => {
+  try {
+    const response = await axios.get(`${BASE_URL}${url}`, { params });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
 };
 
-// Generic POST
-export const post = (url, data) => {
-  return axiosInstance.post(url, data);
+/**
+ * Simple POST request
+ * @param {string} url - API endpoint
+ * @param {object} data - Request body
+ */
+export const apiPost = async (url, data = {}) => {
+  try {
+    const response = await axios.post(`${BASE_URL}${url}`, data);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
 };
 
-// Generic PUT
-export const put = (url, data) => {
-  return axiosInstance.put(url, data);
+/**
+ * Simple PUT request
+ * @param {string} url - API endpoint
+ * @param {object} data - Request body
+ */
+export const apiPut = async (url, data = {}) => {
+  try {
+    const response = await axios.put(`${BASE_URL}${url}`, data);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
 };
 
-// Generic DELETE
-export const del = (url) => {
-  return axiosInstance.delete(url);
+/**
+ * Simple DELETE request
+ * @param {string} url - API endpoint
+ */
+export const apiDelete = async (url) => {
+  try {
+    const response = await axios.delete(`${BASE_URL}${url}`);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
 };
-
-export default axiosInstance;

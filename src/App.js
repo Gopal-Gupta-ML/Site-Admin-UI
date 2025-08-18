@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import LoginPage from "./pages/login";
-import AdminScreen from "./pages/admin";
+import Admin from "./pages/admin";
 
 const App = () => {
  
@@ -17,7 +17,7 @@ const App = () => {
           path="/admin"
           element={
          
-              <AdminScreen  />
+              <Admin  />
             
           }
         />
