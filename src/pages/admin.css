@@ -1,0 +1,27 @@
+/* Default tab style */
+.ant-tabs-nav .ant-tabs-tab {
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    margin: 0 4px;
+    font-weight: bold; /* Bold by default */
+  }
+  
+  /* Remove underline (ink bar) */
+  .ant-tabs-ink-bar {
+    display: none !important;
+  }
+  
+  /* Hover effect: box + dark blue text */
+  .ant-tabs-nav .ant-tabs-tab:hover {
+    background-color: #f0f0f0; /* Light grey box */
+    color: #003366 !important; /* Dark blue text */
+  }
+  
+  /* Active tab style */
+  .ant-tabs-nav .ant-tabs-tab-active {
+    background-color: #e6f7ff; /* Light blue for active */
+    border-radius: 6px;
+    font-weight: bold;
+  }
+  
