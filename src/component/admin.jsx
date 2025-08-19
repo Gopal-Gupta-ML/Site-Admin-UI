@@ -1,10 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Layout, Button, Tabs, Table, Row, Col } from "antd";
 import './admin.css'
+import { useNavigate } from "react-router-dom";
 const { Header, Content } = Layout;
 const { TabPane } = Tabs;
 
 const AdminScreen = () => {
+
+    const navigate = useNavigate();
+
+    useEffect(()=>{
+        if(!localStorage.getItem("Session_Code")){
+            navigate("/login") 
+        }
+    })
   // Mock Data for Users
   const userColumns = [
     { title: "ID", dataIndex: "id", key: "id" },
@@ -42,7 +51,8 @@ const AdminScreen = () => {
   ];
 
   const handleLogout = () => {
-    console.log("Logout clicked");
+    navigate("/login");
+    localStorage.clear();
   };
 
   const renderTableWithHeader = (title, columns, data, buttonText) => (

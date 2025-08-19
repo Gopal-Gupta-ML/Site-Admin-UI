@@ -2,12 +2,25 @@ import React from "react";
 import { Form, Input, Button, Card, Typography, message } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { login } from "../api/service";
-
+import { useNavigate } from 'react-router-dom';
 const { Title } = Typography;
 
 const LoginComp = () => {
-  const onFinish = (values) => {
-    login(values)
+  const navigate = useNavigate();
+
+
+  const onFinish = async(values) => {
+   const response = await login(values)
+   console.log(response);
+   if(response.session_code){
+   localStorage.setItem("Session_Code", response.session_code)
+   navigate('/admin');
+  
+  }
+
+   else{
+    localStorage.clear();
+   }
   };
 
   return (
