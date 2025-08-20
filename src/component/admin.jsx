@@ -166,7 +166,7 @@ const AdminScreen = () => {
       >
         <h2 style={{ color: "white", margin: 0 }}>Admin Panel</h2>
         <Button type="primary" danger onClick={handleLogout}>
-          Log
+          LogOut
         </Button>
       </Header>
 
