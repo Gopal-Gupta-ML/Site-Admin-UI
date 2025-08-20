@@ -1,53 +1,135 @@
-import React, { useEffect } from "react";
-import { Layout, Button, Tabs, Table, Row, Col } from "antd";
-import './admin.css'
+import React, { useEffect, useState } from "react";
+import { Layout, Button, Tabs, Table, Row, Col, Tag } from "antd";
+import "./admin.css";
 import { useNavigate } from "react-router-dom";
+import { fetchGroups, fetchRoles, fetchUsers } from "../api/service";
+import dayjs from "dayjs";
+
 const { Header, Content } = Layout;
 const { TabPane } = Tabs;
 
 const AdminScreen = () => {
+  const navigate = useNavigate();
+  const [groupData, setGroupData] = useState([]);
+  const [roleData, setRoleData] = useState([]);
+  const [userData, setUserData] = useState([]);
 
-    const navigate = useNavigate();
+  useEffect(() => {
+    if (!localStorage.getItem("Session_Code")) {
+      navigate("/login");
+    }
+    fetchData();
+  }, []);
 
-    useEffect(()=>{
-        if(!localStorage.getItem("Session_Code")){
-            navigate("/login") 
-        }
-    })
-  // Mock Data for Users
+  const fetchData = async () => {
+    // Groups
+    const groupResponse = await fetchGroups();
+    const formattedGroups = groupResponse.map((group, index) => ({
+      key: `group-${index}`,
+      displayName: group.displayName,
+      description: group.description,
+      groupType: group.groupType,
+    }));
+    setGroupData(formattedGroups);
+
+    // Roles
+    const roleResponse = await fetchRoles();
+    const formattedRoles = roleResponse.map((role, index) => ({
+      key: `role-${index}`,
+      roleId: index + 1,
+      roleName: role,
+    }));
+    setRoleData(formattedRoles);
+
+    // Users
+    const userResponse = await fetchUsers();
+    const formattedUsers = userResponse.map((user, index) => ({
+      key: `user-${index}`,
+      userId: index + 1,
+      displayName: user.displayName,
+      roles: user.roles || [],
+      groups: user.groups || [],
+      createdDateTime: user.createdDateTime,
+    }));
+    setUserData(formattedUsers);
+  };
+
+  const handleAssign = (record) => {
+    console.log("Assign clicked for:", record);
+  };
+
+  // User table columns
   const userColumns = [
-    { title: "ID", dataIndex: "id", key: "id" },
-    { title: "Name", dataIndex: "name", key: "name" },
-    { title: "Email", dataIndex: "email", key: "email" },
+    { title: "User ID", dataIndex: "userId", key: "userId", width: 80 },
+    { title: "Display Name", dataIndex: "displayName", key: "displayName" },
+    {
+      title: "Roles",
+      dataIndex: "roles",
+      key: "roles",
+      render: (roles) =>
+        roles?.length
+          ? roles.map((r, idx) => (
+              <Tag color="blue" key={`${r}-${idx}`}>
+                {r}
+              </Tag>
+            ))
+          : "—",
+    },
+    {
+      title: "Groups",
+      dataIndex: "groups",
+      key: "groups",
+      render: (groups) =>
+        groups?.length
+          ? groups.map((g, idx) => (
+              <Tag color="green" key={`${g}-${idx}`}>
+                {typeof g === "string" ? g : g.displayName || "Unknown"}
+              </Tag>
+            ))
+          : "—",
+    },
+    {
+      title: "Created DateTime",
+      dataIndex: "createdDateTime",
+      key: "createdDateTime",
+      render: (date) => (date ? dayjs(date).format("YYYY-MM-DD HH:mm") : "—"),
+    },
   ];
 
-  const userData = [
-    { id: 1, name: "John Doe", email: "john@example.com" },
-    { id: 2, name: "Jane Smith", email: "jane@example.com" },
-  ];
-
-  // Mock Data for Roles
+  // Role table columns
   const roleColumns = [
-    { title: "Role ID", dataIndex: "id", key: "id" },
-    { title: "Role Name", dataIndex: "role", key: "role" },
+    { title: "Role ID", dataIndex: "roleId", key: "roleId" },
+    { title: "Role Name", dataIndex: "roleName", key: "roleName" },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record) => (
+        <Button type="primary" onClick={() => handleAssign(record)}>
+          Assign
+        </Button>
+      ),
+    },
   ];
 
-  const roleData = [
-    { id: 1, role: "Admin" },
-    { id: 2, role: "Editor" },
-    { id: 3, role: "Viewer" },
-  ];
-
-  // Mock Data for Groups
+  // Group table columns
   const groupColumns = [
-    { title: "Group ID", dataIndex: "id", key: "id" },
-    { title: "Group Name", dataIndex: "group", key: "group" },
-  ];
-
-  const groupData = [
-    { id: 1, group: "HR" },
-    { id: 2, group: "Engineering" },
-    { id: 3, group: "Sales" },
+    { title: "Display Name", dataIndex: "displayName", key: "displayName" },
+    {
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
+      render: (text) => text || "N/A",
+    },
+    { title: "Group Type", dataIndex: "groupType", key: "groupType" },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record) => (
+        <Button type="primary" onClick={() => handleAssign(record)}>
+          Assign
+        </Button>
+      ),
+    },
   ];
 
   const handleLogout = () => {
@@ -62,10 +144,12 @@ const AdminScreen = () => {
           <h3 style={{ margin: 0 }}>{title}</h3>
         </Col>
         <Col>
-          <Button type="primary" style={{width:"160px"}}>{buttonText}</Button>
+          <Button type="primary" style={{ width: "160px" }}>
+            {buttonText}
+          </Button>
         </Col>
       </Row>
-      <Table columns={columns} dataSource={data} rowKey="id" />
+      <Table columns={columns} dataSource={data} />
     </>
   );
 
@@ -86,7 +170,14 @@ const AdminScreen = () => {
         </Button>
       </Header>
 
-      <Content style={{ margin: "20px", background: "white", padding: "20px", borderRadius: "8px" }}>
+      <Content
+        style={{
+          margin: "20px",
+          background: "white",
+          padding: "20px",
+          borderRadius: "8px",
+        }}
+      >
         <Tabs defaultActiveKey="1">
           <TabPane tab="Users" key="1">
             {renderTableWithHeader("Users", userColumns, userData, "+ Create New User")}
