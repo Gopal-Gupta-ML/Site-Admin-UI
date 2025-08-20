@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ printf "%s-env" (include "admin-ui.fullname" .) }}
+data:
+  REACT_APP_BASE_URL: {{ .Values.env.REACT_APP_BASE_URL | quote }}
+  REACT_APP_ENV: {{ .Values.env.REACT_APP_ENV | quote }}

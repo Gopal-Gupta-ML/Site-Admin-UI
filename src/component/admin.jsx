@@ -104,7 +104,7 @@ const AdminScreen = () => {
       title: "Action",
       key: "action",
       render: (_, record) => (
-        <Button type="primary" onClick={() => handleAssign(record)}>
+        <Button type="primary" onClick={() => handleAssign(record)} disabled={true}>
           Assign
         </Button>
       ),
@@ -125,7 +125,7 @@ const AdminScreen = () => {
       title: "Action",
       key: "action",
       render: (_, record) => (
-        <Button type="primary" onClick={() => handleAssign(record)}>
+        <Button type="primary" onClick={() => handleAssign(record)} disabled={true}>
           Assign
         </Button>
       ),
@@ -144,7 +144,7 @@ const AdminScreen = () => {
           <h3 style={{ margin: 0 }}>{title}</h3>
         </Col>
         <Col>
-          <Button type="primary" style={{ width: "160px" }}>
+          <Button type="primary" style={{ width: "160px" }} disabled={true}>
             {buttonText}
           </Button>
         </Col>
@@ -166,7 +166,7 @@ const AdminScreen = () => {
       >
         <h2 style={{ color: "white", margin: 0 }}>Admin Panel</h2>
         <Button type="primary" danger onClick={handleLogout}>
-          Logout
+          Log
         </Button>
       </Header>
 
