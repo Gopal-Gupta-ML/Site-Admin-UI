@@ -7,13 +7,13 @@ const BASE_URL = process.env.REACT_APP_BASE_URL;
  * @param {string} url - API endpoint
  * @param {object} params - Optional query params
  */
-export const apiGet = async (url, params = {} , headers={}) => {
+export const apiGet = async (url, params = {}) => {
   try {
-    const cookie = localStorage.getItem("Session_Code");
-    const response = await axios.get(`${BASE_URL}${url}`, { params , headers: {
-      Cookie: `JSESSIONID=${cookie}`, 
-      ...headers,
-    }, });
+  
+    const response = await axios.get(`${BASE_URL}${url}`, {
+      params,
+      withCredentials: true,   // 👈 add this directly
+    });
     return response.data;
   } catch (error) {
     throw error.response?.data || error.message;

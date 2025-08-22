@@ -17,7 +17,7 @@ const App = () => {
           path="/admin"
           element={
          
-              <Admin  />
+           <Admin  />
             
           }
         />
