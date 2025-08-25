@@ -27,7 +27,9 @@ export const apiGet = async (url, params = {}) => {
  */
 export const apiPost = async (url, data = {}) => {
   try {
-    const response = await axios.post(`${BASE_URL}${url}`, data);
+    const response = await axios.post(`${BASE_URL}${url}`, data, {
+      withCredentials: true,   // 👈 add this for session cookies
+    });
     return response.data;
   } catch (error) {
     throw error.response?.data || error.message;

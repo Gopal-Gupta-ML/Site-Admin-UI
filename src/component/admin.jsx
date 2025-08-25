@@ -25,7 +25,7 @@ const AdminScreen = () => {
   const fetchData = async () => {
     // Groups
     const groupResponse = await fetchGroups();
-    const formattedGroups = groupResponse?.map((group, index) => ({
+    const formattedGroups = groupResponse.data?.map((group, index) => ({
       key: `group-${index}`,
       displayName: group.displayName,
       description: group.description,
@@ -35,7 +35,7 @@ const AdminScreen = () => {
 
     // Roles
     const roleResponse = await fetchRoles();
-    const formattedRoles = roleResponse?.map((role, index) => ({
+    const formattedRoles = roleResponse.data?.map((role, index) => ({
       key: `role-${index}`,
       roleId: index + 1,
       roleName: role,
@@ -44,7 +44,7 @@ const AdminScreen = () => {
 
     // Users
     const userResponse = await fetchUsers();
-    const formattedUsers = userResponse?.map((user, index) => ({
+    const formattedUsers = userResponse.users?.map((user, index) => ({
       key: `user-${index}`,
       userId: index + 1,
       displayName: user.displayName,
