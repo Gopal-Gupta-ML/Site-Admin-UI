@@ -6,7 +6,7 @@ image:
   pullPolicy: IfNotPresent
 
 env:
-  REACT_APP_BASE_URL: "http://localhost:8082/api"
+  REACT_APP_BASE_URL: "http://localhost:8085/web"
   REACT_APP_ENV: "development"
 
 service:
