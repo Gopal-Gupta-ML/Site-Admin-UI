@@ -14,7 +14,7 @@ const AdminScreen = () => {
   const [groupData, setGroupData] = useState([]);
   const [roleData, setRoleData] = useState([]);
   const [userData, setUserData] = useState([]);
-
+const [loading, setLoading] = useState(false);
   useEffect(() => {
     if (!localStorage.getItem("Session_Code")) {
       navigate("/login");
@@ -23,6 +23,7 @@ const AdminScreen = () => {
   }, []);
 
   const fetchData = async () => {
+    setLoading(true);
     // Groups
     const groupResponse = await fetchGroups();
     const formattedGroups = groupResponse.data?.map((group, index) => ({
@@ -52,6 +53,7 @@ const AdminScreen = () => {
       groups: user.groups || [],
       createdDateTime: user.createdDateTime,
     }));
+    setLoading(false);
     setUserData(formattedUsers);
   };
 
@@ -150,7 +152,7 @@ const AdminScreen = () => {
           </Button>
         </Col>
       </Row>
-      <Table columns={columns} dataSource={data} />
+      <Table columns={columns} dataSource={data} loading={loading} />
     </>
   );
 
