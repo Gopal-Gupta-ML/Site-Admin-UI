@@ -8,6 +8,12 @@ export const login = async (data) => {
 
  
  };
+export const logout = async () => {
+ const response =  await apiPost(ENDPOINTS.LOGOUT);
+ return response ;
+
+ 
+ };
 
 
  export const fetchGroups = async()=>{

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Layout, Button, Tabs, Table, Row, Col, Tag } from "antd";
 import "./admin.css";
 import { useNavigate } from "react-router-dom";
-import { fetchGroups, fetchRoles, fetchUsers } from "../api/service";
+import { fetchGroups, fetchRoles, fetchUsers, logout } from "../api/service";
 import dayjs from "dayjs";
 
 const { Header, Content } = Layout;
@@ -135,7 +135,8 @@ const [loading, setLoading] = useState(false);
     },
   ];
 
-  const handleLogout = () => {
+  const handleLogout = async() => {
+     const response = await logout()
     navigate("/login");
     localStorage.clear();
   };
@@ -152,7 +153,7 @@ const [loading, setLoading] = useState(false);
           </Button>
         </Col>
       </Row>
-      <Table columns={columns} dataSource={data} loading={loading} />
+      <Table columns={columns} dataSource={data} loading={loading} pagination={true}  />
     </>
   );
 
