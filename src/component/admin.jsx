@@ -15,14 +15,19 @@ const AdminScreen = () => {
   const [roleData, setRoleData] = useState([]);
   const [userData, setUserData] = useState([]);
 const [loading, setLoading] = useState(false);
+const [pagination, setPagination] = useState({
+  current: 1,    // default to first page
+  pageSize: 5,   // default page size
+  total: 0,      // will be updated after API response
+});
   useEffect(() => {
     if (!localStorage.getItem("Session_Code")) {
       navigate("/login");
     }
-    fetchData();
+    fetchData(pagination.current, pagination.pageSize);
   }, []);
 
-  const fetchData = async () => {
+  const fetchData = async (page, pageSize) => {
     setLoading(true);
     // Groups
     const groupResponse = await fetchGroups();
@@ -44,7 +49,7 @@ const [loading, setLoading] = useState(false);
     setRoleData(formattedRoles);
 
     // Users
-    const userResponse = await fetchUsers();
+    const userResponse = await fetchUsers(page , pageSize);
     const formattedUsers = userResponse.users?.map((user, index) => ({
       key: `user-${index}`,
       userId: index + 1,
@@ -52,6 +57,13 @@ const [loading, setLoading] = useState(false);
       roles: user.roles || [],
       groups: user.groups || [],
       createdDateTime: user.createdDateTime,
+    }));
+
+    setPagination((prev) => ({
+      ...prev,
+      current: page,
+      pageSize,
+      total: userResponse.totalElements,
     }));
     setLoading(false);
     setUserData(formattedUsers);
@@ -153,7 +165,15 @@ const [loading, setLoading] = useState(false);
           </Button>
         </Col>
       </Row>
-      <Table columns={columns} dataSource={data} loading={loading} pagination={true}  />
+      <Table columns={columns} dataSource={data} loading={loading}  pagination={{
+    current: pagination.current,
+    pageSize: pagination.pageSize,
+    total: pagination.total,
+    showSizeChanger: true, // allows user to change page size
+  }}
+  onChange={(newPagination) => {
+    fetchData(newPagination.current, newPagination.pageSize);
+  }}  />
     </>
   );
 

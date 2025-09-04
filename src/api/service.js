@@ -24,8 +24,8 @@ export const logout = async () => {
     const response =  await apiGet(ENDPOINTS.ROLES);
  return response ;
  }
- export const fetchUsers = async()=>{
-    const response =  await apiGet(ENDPOINTS.USERS);
+ export const fetchUsers = async(page, pageSize)=>{
+    const response =  await apiGet(`${ENDPOINTS.USERS}?page=${page - 1}&size=${pageSize}`);
  return response ;
  }
 
