@@ -21,9 +21,6 @@ const [pagination, setPagination] = useState({
   total: 0,      // will be updated after API response
 });
   useEffect(() => {
-    if (!localStorage.getItem("Session_Code")) {
-      navigate("/login");
-    }
     fetchData(pagination.current, pagination.pageSize);
   }, []);
 
