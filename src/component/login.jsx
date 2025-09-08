@@ -11,16 +11,13 @@ const LoginComp = () => {
 
   const onFinish = async(values) => {
    const response = await login(values)
-   console.log(response);
-   if(response.session_code){
-   localStorage.setItem("Session_Code", response.session_code)
+
+   if(response.authenticated){
+  
    navigate('/admin');
   
   }
 
-   else{
-    localStorage.clear();
-   }
   };
 
   return (

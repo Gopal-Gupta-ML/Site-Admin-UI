@@ -150,7 +150,7 @@ const [pagination, setPagination] = useState({
   const handleLogout = async() => {
      const response = await logout()
     navigate("/login");
-    localStorage.clear();
+   
   };
 
   const renderTableWithHeader = (title, columns, data, buttonText) => (
